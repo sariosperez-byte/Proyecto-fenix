@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Proyecto Fénix — Sebastián Ríos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#050505;
+    --card:#111111;
+    --card-2:#161616;
+    --line:rgba(200,161,90,0.22);
+    --line-soft:rgba(255,255,255,0.08);
+    --gold:#C8A15A;
+    --gold-soft:rgba(200,161,90,0.55);
+    --white:#FFFFFF;
+    --muted:rgba(255,255,255,0.56);
+    --muted-2:rgba(255,255,255,0.38);
+    --green:#22C55E;
+    --green-soft:rgba(34,197,94,0.14);
+    --radius:10px;
+    --display:"Bebas Neue", "Arial Narrow", Impact, sans-serif;
+    --body:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html{
+    scroll-behavior:smooth;
+    scroll-padding-top:calc(64px + env(safe-area-inset-top,0px));
+  }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--white);
+    font-family:var(--body);
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--gold-soft); color:#050505;}
+
+  a{color:inherit;}
+
+  /* ---------- top nav ---------- */
+  .topnav{
+    position:sticky;
+    top:0;
+    top:env(safe-area-inset-top,0px);
+    z-index:40;
+    background:rgba(5,5,5,0.86);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .topnav-inner{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    overflow-x:auto;
+    padding:12px 18px;
+    scrollbar-width:none;
+  }
+  .topnav-inner::-webkit-scrollbar{display:none;}
+  .topnav-mark{
+    font-family:var(--display);
+    font-size:15px;
+    letter-spacing:0.06em;
+    color:var(--gold);
+    flex:0 0 auto;
+    padding-right:6px;
+    border-right:1px solid var(--line-soft);
+  }
+  .topnav a{
+    flex:0 0 auto;
+    font-size:12.5px;
+    color:var(--muted);
+    text-decoration:none;
+    white-space:nowrap;
+    padding:6px 2px;
+    border-bottom:1.5px solid transparent;
+  }
+  .topnav a.active{color:var(--white); border-color:var(--gold);}
+  .progress-rail{height:2px; background:var(--line-soft);}
+  .progress-fill{height:2px; width:0%; background:var(--gold); transition:width 0.15s linear;}
+
+  /* ---------- layout ---------- */
+  .page{
+    max-width:640px;
+    margin:0 auto;
+    padding:56px 22px 64px;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .page:last-of-type{border-bottom:none;}
+
+  .kicker{
+    font-size:11.5px;
+    letter-spacing:0.14em;
+    color:var(--gold);
+    font-weight:600;
+    text-transform:uppercase;
+    margin:0 0 10px;
+  }
+  h1,h2,h3{font-family:var(--display); font-weight:400; letter-spacing:0.01em; margin:0;}
+  .page-title{font-size:40px; line-height:1.02; margin-bottom:6px;}
+  .page-sub{color:var(--muted); font-size:14.5px; margin:0 0 30px; max-width:46ch; line-height:1.5;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px 20px 22px;
+  }
+  .card + .card{margin-top:14px;}
+  .card h3{font-size:22px; color:var(--white); margin-bottom:2px;}
+  .card .card-note{color:var(--muted-2); font-size:12px; margin:0 0 14px;}
+
+  hr.rule{border:none; border-top:1px solid var(--line); margin:34px 0;}
+
+  /* ---------- cover ---------- */
+  .cover{
+    min-height:calc(100svh - 46px);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding-top:64px;
+    padding-bottom:40px;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .cover-top{padding:0 22px;}
+  .cover-eyebrow{
+    font-size:12px; letter-spacing:0.22em; color:var(--gold-soft);
+    text-transform:uppercase; margin:0 0 18px; font-weight:600;
+  }
+  .cover-title{
+    font-family:var(--display);
+    font-size:clamp(54px, 15vw, 88px);
+    line-height:0.92;
+    margin:0;
+    color:var(--white);
+  }
+  .cover-title span{color:var(--gold);}
+  .cover-tagline{
+    font-size:16px;
+    color:var(--muted);
+    margin:16px 0 0;
+    max-width:30ch;
+  }
+  .cover-figure{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:18px 0;
+  }
+  .cover-figure svg{width:min(78vw, 320px); height:auto;}
+  .cover-bottom{
+    padding:0 22px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:16px;
+  }
+  .cover-name{font-size:15px; color:var(--white); font-weight:600; margin:0;}
+  .cover-role{font-size:12px; color:var(--muted-2); margin:2px 0 0;}
+  .cover-year{
+    font-family:var(--display);
+    font-size:28px;
+    color:var(--gold);
+    text-align:right;
+  }
+
+  /* ---------- stat grid ---------- */
+  .stat-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
+  .stat{
+    background:var(--card-2);
+    border:1px solid var(--line-soft);
+    border-radius:8px;
+    padding:12px 14px;
+  }
+  .stat-val{font-family:var(--display); font-size:24px; color:var(--gold); line-height:1;}
+  .stat-label{font-size:11.5px; color:var(--muted); margin-top:4px;}
+
+  .goal-list{list-style:none; margin:0; padding:0; counter-reset:goal;}
+  .goal-list li{
+    counter-increment:goal;
+    display:flex;
+    gap:12px;
+    align-items:baseline;
+    padding:9px 0;
+    border-bottom:1px solid var(--line-soft);
+    font-size:14.5px;
+  }
+  .goal-list li:last-child{border-bottom:none;}
+  .goal-list li::before{
+    content:counter(goal);
+    font-family:var(--display);
+    color:var(--gold);
+    font-size:16px;
+    min-width:18px;
+  }
+
+  .flow{display:flex; flex-direction:column; gap:0;}
+  .flow-step{
+    display:flex; align-items:center; gap:12px;
+    padding:10px 0;
+  }
+  .flow-dot{
+    width:8px; height:8px; border-radius:50%; background:var(--gold);
+    flex:0 0 auto;
+  }
+  .flow-label{font-size:14.5px; color:var(--white);}
+  .flow-connector{width:1px; height:16px; background:var(--line); margin-left:3.5px;}
+  .flow-side{
+    display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;
+  }
+  .pill{
+    font-size:11.5px; color:var(--muted); border:1px solid var(--line);
+    border-radius:100px; padding:5px 11px;
+  }
+
+  .rule-list{list-style:none; margin:0; padding:0;}
+  .rule-list li{
+    display:flex; gap:10px; font-size:14px; color:var(--muted);
+    padding:7px 0; align-items:flex-start;
+  }
+  .rule-list li::before{content:"—"; color:var(--gold); flex:0 0 auto;}
+
+  /* ---------- day header ---------- */
+  .day-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom:4px;
+  }
+  .day-head h2{font-size:30px;}
+  .day-tag{
+    font-size:11px; color:var(--muted-2); letter-spacing:0.08em; text-transform:uppercase;
+  }
+  .day-focus{color:var(--gold); font-size:13.5px; margin:0 0 24px;}
+
+  .block-label{
+    display:flex; align-items:center; gap:8px;
+    margin:0 0 10px;
+  }
+  .block-label .dot{width:6px; height:6px; border-radius:50%; background:var(--gold);}
+  .block-label span{
+    font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold);
+    font-weight:600;
+  }
+  .block-time{color:var(--muted-2); font-weight:400; text-transform:none; letter-spacing:0; font-size:11.5px;}
+
+  .ex-table{width:100%; border-collapse:collapse; margin-bottom:22px;}
+  .ex-table tr{border-bottom:1px solid var(--line-soft);}
+  .ex-table tr:last-child{border-bottom:none;}
+  .ex-row td{padding:10px 0; vertical-align:top;}
+  .ex-check{width:30px;}
+  .chk{
+    -webkit-appearance:none; appearance:none;
+    width:17px; height:17px; border-radius:4px;
+    border:1.5px solid var(--gold-soft);
+    background:transparent;
+    cursor:pointer;
+    position:relative;
+    top:2px;
+  }
+  .chk:checked{background:var(--gold); border-color:var(--gold);}
+  .chk:checked::after{
+    content:"";
+    position:absolute; left:5px; top:1px;
+    width:4px; height:9px;
+    border:solid #050505;
+    border-width:0 2px 2px 0;
+    transform:rotate(45deg);
+  }
+  .ex-name{font-size:14.5px; color:var(--white); line-height:1.3;}
+  .ex-name.done{color:var(--muted-2); text-decoration:line-through;}
+  .ex-meta{font-size:11.5px; color:var(--muted-2); margin-top:2px;}
+  .ex-sets{
+    text-align:right; font-size:14px; color:var(--gold);
+    font-variant-numeric:tabular-nums; white-space:nowrap; padding-left:10px;
+  }
+
+  .note-box{
+    border:1px solid var(--line);
+    background:var(--card-2);
+    border-radius:8px;
+    padding:14px 16px;
+    font-size:13.5px;
+    color:var(--muted);
+    margin-top:6px;
+  }
+  .note-box b{color:var(--gold); font-weight:600;}
+
+  .circuit{
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px 18px;
+    margin-bottom:22px;
+  }
+  .circuit-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px;}
+  .circuit-head span{font-size:12px; color:var(--muted-2);}
+  .circuit-list{list-style:none; margin:0; padding:0;}
+  .circuit-list li{
+    display:flex; justify-content:space-between;
+    font-size:14px; padding:7px 0; border-bottom:1px dashed var(--line-soft);
+  }
+  .circuit-list li:last-child{border-bottom:none;}
+  .circuit-list b{color:var(--gold); font-weight:600;}
+
+  /* ---------- progression ladders ---------- */
+  .ladder{list-style:none; margin:0 0 6px; padding:0; position:relative;}
+  .ladder li{
+    position:relative;
+    padding:10px 0 10px 26px;
+    font-size:14.5px;
+    color:var(--muted);
+  }
+  .ladder li::before{
+    content:"";
+    position:absolute; left:5px; top:0; bottom:0; width:1px;
+    background:var(--line);
+  }
+  .ladder li::after{
+    content:"";
+    position:absolute; left:1px; top:15px;
+    width:9px; height:9px; border-radius:50%;
+    background:var(--bg); border:1.5px solid var(--gold-soft);
+  }
+  .ladder li:first-child::before{top:15px;}
+  .ladder li:last-child::before{bottom:calc(100% - 15px);}
+  .ladder li.current{color:var(--white); font-weight:600;}
+  .ladder li.current::after{background:var(--gold); border-color:var(--gold);}
+  .ladder li .now-tag{
+    display:inline-block; margin-left:8px;
+    font-size:10px; letter-spacing:0.06em; text-transform:uppercase;
+    color:#050505; background:var(--gold); border-radius:100px; padding:2px 8px;
+    font-weight:700;
+  }
+
+  .prog-bar-wrap{margin:16px 0 4px;}
+  .prog-bar-labels{display:flex; justify-content:space-between; font-size:11.5px; color:var(--muted-2); margin-bottom:6px;}
+  .prog-bar{height:6px; border-radius:100px; background:var(--line-soft); overflow:hidden;}
+  .prog-bar-fill{height:100%; background:var(--green); border-radius:100px;}
+
+  .goal-chip-row{display:flex; flex-direction:column; gap:8px; margin-top:16px;}
+  .goal-chip{
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:13px; color:var(--muted); border-top:1px solid var(--line-soft); padding-top:8px;
+  }
+  .goal-chip b{color:var(--white); font-weight:600;}
+
+  .overload-box{
+    background:linear-gradient(180deg, rgba(200,161,90,0.08), transparent);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px 20px;
+    margin-top:22px;
+  }
+  .overload-box h3{font-size:19px; margin-bottom:10px;}
+  .overload-box p{font-size:13px; color:var(--muted); margin:0 0 10px;}
+  .chip-row{display:flex; flex-wrap:wrap; gap:8px;}
+
+  /* ---------- checklist ---------- */
+  .check-list{list-style:none; margin:0; padding:0;}
+  .check-list li{
+    display:flex; align-items:center; gap:12px;
+    padding:10px 0; border-bottom:1px solid var(--line-soft);
+    font-size:14.5px;
+  }
+  .check-list li:last-child{border-bottom:none;}
+  .check-list .lbl{flex:1;}
+  .check-list .lbl.done{color:var(--muted-2); text-decoration:line-through;}
+
+  .food-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:6px;}
+  .food-item{
+    display:flex; align-items:center; gap:9px;
+    background:var(--card-2); border:1px solid var(--line-soft); border-radius:7px;
+    padding:9px 11px; font-size:13px; color:var(--muted);
+  }
+  .food-item svg{width:16px; height:16px; flex:0 0 auto; color:var(--gold);}
+
+  .macro-row{display:flex; gap:10px; margin-top:14px;}
+  .macro{flex:1; text-align:center; background:var(--card-2); border:1px solid var(--line-soft); border-radius:8px; padding:12px 6px;}
+  .macro-val{font-family:var(--display); font-size:22px; color:var(--green);}
+  .macro-label{font-size:10.5px; color:var(--muted-2); margin-top:2px;}
+
+  .no-rules{margin-top:14px; display:flex; gap:16px; flex-wrap:wrap;}
+  .no-rules span{font-size:12px; color:var(--muted-2);}
+  .no-rules b{color:var(--gold);}
+
+  /* ---------- tracker table ---------- */
+  .tracker-scroll{overflow-x:auto; margin:0 -20px; padding:0 20px;}
+  table.tracker{border-collapse:collapse; min-width:920px; font-size:12px;}
+  table.tracker th{
+    font-size:10px; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--gold); text-align:left; padding:8px 10px;
+    border-bottom:1px solid var(--line); white-space:nowrap; font-weight:600;
+  }
+  table.tracker td{
+    padding:6px 8px; border-bottom:1px solid var(--line-soft);
+    white-space:nowrap;
+  }
+  table.tracker td.wk{color:var(--muted-2); font-variant-numeric:tabular-nums;}
+  .cell-input{
+    width:56px; background:transparent; border:none; border-bottom:1px solid var(--line-soft);
+    color:var(--white); font-size:12px; font-family:var(--body); padding:4px 2px;
+    text-align:center; font-variant-numeric:tabular-nums;
+  }
+  .cell-input:focus{outline:none; border-color:var(--gold);}
+  .cell-input::placeholder{color:var(--muted-2);}
+
+  .reset-row{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:14px;
+  }
+  .reset-btn{
+    background:none; border:1px solid var(--line); color:var(--muted);
+    font-size:11.5px; padding:8px 13px; border-radius:100px; cursor:pointer;
+    font-family:var(--body);
+  }
+  .reset-btn:active{border-color:var(--gold); color:var(--gold);}
+  .save-note{font-size:10.5px; color:var(--muted-2);}
+
+  footer{
+    text-align:center; padding:40px 22px calc(40px + env(safe-area-inset-bottom,0px));
+    font-size:11px; color:var(--muted-2); letter-spacing:0.05em;
+  }
+  footer b{color:var(--gold);}
+
+  @media (min-width:720px){
+    .page{padding-left:0; padding-right:0;}
+    .food-grid{grid-template-columns:repeat(4,1fr);}
+    .stat-grid{grid-template-columns:repeat(4,1fr);}
+  }
+
+  @media print{
+    .topnav{display:none;}
+    .page{page-break-after:always; border-bottom:none;}
+    body{background:#050505;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner" id="navInner">
+    <span class="topnav-mark">FÉNIX</span>
+    <a href="#p1" data-idx="0">Portada</a>
+    <a href="#p2" data-idx="1">Método</a>
+    <a href="#p3" data-idx="2">Lun · Mar</a>
+    <a href="#p4" data-idx="3">Jue · Vie</a>
+    <a href="#p5" data-idx="4">Progresión</a>
+    <a href="#p6" data-idx="5">Recovery</a>
+  </div>
+  <div class="progress-rail"><div class="progress-fill" id="progFill"></div></div>
+</nav>
+
+<!-- ================= PÁGINA 1 — PORTADA ================= -->
+<section class="page cover" id="p1">
+  <div class="cover-top">
+    <p class="cover-eyebrow">Programa de rendimiento · 2026</p>
+    <h1 class="cover-title">PROYECTO<br><span>FÉNIX</span></h1>
+    <p class="cover-tagline">Renacer más fuerte. Más estético. Más funcional.</p>
+  </div>
+
+  <div class="cover-figure">
+    <svg viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="150" cy="178" rx="90" ry="6" fill="#C8A15A" opacity="0.08"/>
+      <g stroke="#C8A15A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <!-- planche silhouette: arms on ground, body horizontal -->
+        <line x1="70" y1="150" x2="95" y2="150" stroke="#3a3a3a" stroke-width="2"/>
+        <line x1="88" y1="150" x2="92" y2="112" />
+        <circle cx="92" cy="104" r="8" fill="#050505" stroke="#C8A15A"/>
+        <path d="M92 112 C 130 100, 175 100, 205 108" />
+        <path d="M120 106 C 150 122, 178 128, 205 108" />
+        <path d="M92 112 C 90 132, 86 146, 75 150" />
+        <path d="M205 108 C 214 120, 220 136, 214 150" />
+        <path d="M214 150 C 220 152, 226 152, 231 148" />
+        <path d="M75 150 C 68 153, 61 153, 55 149" />
+      </g>
+    </svg>
+  </div>
+
+  <div class="cover-bottom">
+    <div>
+      <p class="cover-name">Sebastián Ríos</p>
+      <p class="cover-role">Skill · Fuerza · Estética</p>
+    </div>
+    <div class="cover-year">2026</div>
+  </div>
+</section>
+
+<!-- ================= PÁGINA 2 — OBJETIVO Y METODOLOGÍA ================= -->
+<section class="page" id="p2">
+  <p class="kicker">Página 2</p>
+  <h2 class="page-title">Objetivo y<br>metodología</h2>
+  <p class="page-sub">La base sobre la que corre todo el programa: dónde estás, hacia dónde vas y en qué orden se construye.</p>
+
+  <div class="card">
+    <h3>Mi perfil</h3>
+    <div class="stat-grid" style="margin-top:14px;">
+      <div class="stat"><div class="stat-val">17</div><div class="stat-label">Años</div></div>
+      <div class="stat"><div class="stat-val">176</div><div class="stat-label">cm</div></div>
+      <div class="stat"><div class="stat-val">79–80</div><div class="stat-label">kg actuales</div></div>
+      <div class="stat"><div class="stat-val">17–19%</div><div class="stat-label">Grasa actual</div></div>
+    </div>
+    <div class="prog-bar-wrap">
+      <div class="prog-bar-labels"><span>Grasa actual</span><span>Objetivo 13–15%</span></div>
+      <div class="prog-bar"><div class="prog-bar-fill" style="width:62%"></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Objetivos principales</h3>
+    <ol class="goal-list" style="margin-top:12px;">
+      <li>Planche</li>
+      <li>Muscle-Up</li>
+      <li>Dragon Flag</li>
+      <li>Estética — punto medio entre Baki y Garou</li>
+      <li>Fuerza relativa</li>
+      <li>Agilidad</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3>Metodología Fénix</h3>
+    <div class="flow" style="margin-top:14px;">
+      <div class="flow-step"><div class="flow-dot"></div><div class="flow-label">Skill primero</div></div>
+      <div class="flow-connector"></div>
+      <div class="flow-step"><div class="flow-dot"></div><div class="flow-label">Fuerza después</div></div>
+      <div class="flow-connector"></div>
+      <div class="flow-step"><div class="flow-dot"></div><div class="flow-label">Hipertrofia después</div></div>
+      <div class="flow-connector"></div>
+      <div class="flow-step"><div class="flow-dot"></div><div class="flow-label">Core al final</div></div>
+    </div>
+    <div class="flow-side">
+      <span class="pill">Movilidad diaria</span>
+      <span class="pill">Sobrecarga progresiva</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Reglas del programa</h3>
+    <ul class="rule-list" style="margin-top:12px;">
+      <li>Nunca entrenar skills fatigado</li>
+      <li>Técnica antes que repeticiones</li>
+      <li>Dormir 8 horas</li>
+      <li>Proteína diaria</li>
+      <li>Viernes opcional</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= PÁGINA 3 — LUNES / MARTES ================= -->
+<section class="page" id="p3">
+  <p class="kicker">Página 3</p>
+  <h2 class="page-title">Rutina —<br>Lunes y martes</h2>
+  <p class="page-sub">Marca cada ejercicio al completarlo. El orden y las series son fijos.</p>
+
+  <div class="day-head"><h2>Lunes</h2><span class="day-tag">Día 1</span></div>
+  <p class="day-focus">Push + Planche</p>
+
+  <div class="block-label"><div class="dot"></div><span>Skill <span class="block-time">· 15 min</span></span></div>
+  <table class="ex-table">
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="lun-1"></td>
+      <td><div class="ex-name" data-name>Planche Lean</div><div class="ex-meta">Hombro anterior · core · serrato — descanso 90s</div></td>
+      <td class="ex-sets">4×15–20s</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="lun-2"></td>
+      <td><div class="ex-name" data-name>Tuck Planche Hold</div><div class="ex-meta">Hombro · core · serrato — descanso 90s</div></td>
+      <td class="ex-sets">5×8–10s</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="lun-3"></td>
+      <td><div class="ex-name" data-name>Planche Lean Push-Ups <span style="color:var(--muted-2)">(parciales)</span></div><div class="ex-meta">Pecho · hombro · tríceps — descanso 90s</div></td>
+      <td class="ex-sets">3×5</td></tr>
+  </table>
+
+  <div class="block-label"><div class="dot"></div><span>Fuerza</span></div>
+  <table class="ex-table">
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="lun-4"></td>
+      <td><div class="ex-name" data-name>Pseudo Planche Push-Ups</div><div class="ex-meta">Pecho · hombro anterior · tríceps — descanso 90s</div></td>
+      <td class="ex-sets">4×6–8</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="lun-5"></td>
+      <td><div class="ex-name" data-name>Pike Push-Ups <span style="color:var(--muted-2)">(pies elevados)</span></div><div class="ex-meta">Hombro · tríceps — descanso 75s</div></td>
+      <td class="ex-sets">4×8</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="lun-6"></td>
+      <td><div class="ex-name" data-name>Deep Push-Ups en Paralletes</div><div class="ex-meta">Pecho · tríceps · hombro — descanso 75s</div></td>
+      <td class="ex-sets">3×10–12</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="lun-7"></td>
+      <td><div class="ex-name" data-name>Diamond Push-Ups lentas</div><div class="ex-meta">Tríceps · pecho interno — descanso 60s · tempo 3-1-3</div></td>
+      <td class="ex-sets">3×12</td></tr>
+  </table>
+
+  <div class="block-label"><div class="dot"></div><span>Hipertrofia</span></div>
+  <table class="ex-table">
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="lun-8"></td>
+      <td><div class="ex-name" data-name>Elevaciones Laterales</div><div class="ex-meta">Deltoide lateral — descanso 45s</div></td>
+      <td class="ex-sets">4×15</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="lun-9"></td>
+      <td><div class="ex-name" data-name>Tríceps Overhead con Banda</div><div class="ex-meta">Tríceps, cabeza larga — descanso 45s</div></td>
+      <td class="ex-sets">3×15</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="lun-10"></td>
+      <td><div class="ex-name" data-name>Flexiones al fallo técnico</div><div class="ex-meta">Pecho · tríceps — descanso 60s</div></td>
+      <td class="ex-sets">2 series</td></tr>
+  </table>
+
+  <div class="block-label"><div class="dot"></div><span>Core</span></div>
+  <table class="ex-table">
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="lun-11"></td>
+      <td><div class="ex-name" data-name>L-Sit</div><div class="ex-meta">Core · flexores de cadera — descanso 60s</div></td>
+      <td class="ex-sets">4×20s</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="lun-12"></td>
+      <td><div class="ex-name" data-name>Hollow Rocks</div><div class="ex-meta">Recto abdominal — descanso 45s</div></td>
+      <td class="ex-sets">3×15</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="lun-13"></td>
+      <td><div class="ex-name" data-name>Compression Lifts</div><div class="ex-meta">Core · flexores de cadera — descanso 45s</div></td>
+      <td class="ex-sets">3×12</td></tr>
+  </table>
+
+  <hr class="rule">
+
+  <div class="day-head"><h2>Martes</h2><span class="day-tag">Día 2</span></div>
+  <p class="day-focus">Pull + Muscle-Up</p>
+
+  <div class="block-label"><div class="dot"></div><span>Skill</span></div>
+  <table class="ex-table">
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="mar-1"></td>
+      <td><div class="ex-name" data-name>Explosive Pull-Ups <span style="color:var(--muted-2)">(pecho a barra)</span></div><div class="ex-meta">Dorsal · bíceps — descanso 120s · tempo explosivo</div></td>
+      <td class="ex-sets">5×3</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="mar-2"></td>
+      <td><div class="ex-name" data-name>Band Assisted Muscle-Up</div><div class="ex-meta">Dorsal · tríceps · core — descanso 120s</div></td>
+      <td class="ex-sets">5×3</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="mar-3"></td>
+      <td><div class="ex-name" data-name>Transition Drill con Banda</div><div class="ex-meta">Técnica de transición · core — descanso 90s</div></td>
+      <td class="ex-sets">4×5</td></tr>
+  </table>
+
+  <div class="block-label"><div class="dot"></div><span>Fuerza</span></div>
+  <table class="ex-table">
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="mar-4"></td>
+      <td><div class="ex-name" data-name>Dominadas estrictas / lastradas</div><div class="ex-meta">Dorsal · bíceps — descanso 90s</div></td>
+      <td class="ex-sets">5×5</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="mar-5"></td>
+      <td><div class="ex-name" data-name>Chin-Ups</div><div class="ex-meta">Bíceps · dorsal — descanso 75s</div></td>
+      <td class="ex-sets">3×8</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="mar-6"></td>
+      <td><div class="ex-name" data-name>Australian Rows</div><div class="ex-meta">Espalda media · bíceps — descanso 60s</div></td>
+      <td class="ex-sets">4×10–12</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="mar-7"></td>
+      <td><div class="ex-name" data-name>Face Pull con Banda</div><div class="ex-meta">Deltoide posterior · rotadores — descanso 45s</div></td>
+      <td class="ex-sets">3×15</td></tr>
+  </table>
+
+  <div class="block-label"><div class="dot"></div><span>Bíceps</span></div>
+  <table class="ex-table">
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="mar-8"></td>
+      <td><div class="ex-name" data-name>Curl con Banda</div><div class="ex-meta">Bíceps — descanso 45s</div></td>
+      <td class="ex-sets">3×15</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="mar-9"></td>
+      <td><div class="ex-name" data-name>Hammer Curl</div><div class="ex-meta">Bíceps · braquial — descanso 45s</div></td>
+      <td class="ex-sets">3×12</td></tr>
+  </table>
+
+  <div class="block-label"><div class="dot"></div><span>Core</span></div>
+  <table class="ex-table">
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="mar-10"></td>
+      <td><div class="ex-name" data-name>Dragon Flag Negativa</div><div class="ex-meta">Core completo — descanso 90s</div></td>
+      <td class="ex-sets">5×3</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="mar-11"></td>
+      <td><div class="ex-name" data-name>Dragon Flag Completa</div><div class="ex-meta">Core completo — descanso 90s</div></td>
+      <td class="ex-sets">4×2–4</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="mar-12"></td>
+      <td><div class="ex-name" data-name>Toes to Bar</div><div class="ex-meta">Core · flexores de cadera · agarre — descanso 60s</div></td>
+      <td class="ex-sets">3×10</td></tr>
+  </table>
+</section>
+
+<!-- ================= PÁGINA 4 — JUEVES / VIERNES ================= -->
+<section class="page" id="p4">
+  <p class="kicker">Página 4</p>
+  <h2 class="page-title">Rutina —<br>Jueves y viernes</h2>
+  <p class="page-sub">Jueves combina skill, circuito y potencia. Viernes es mantenimiento opcional.</p>
+
+  <div class="day-head"><h2>Jueves</h2><span class="day-tag">Día 3</span></div>
+  <p class="day-focus">Hybrid Baki Day</p>
+
+  <div class="block-label"><div class="dot"></div><span>Skill</span></div>
+  <table class="ex-table">
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="jue-1"></td>
+      <td><div class="ex-name" data-name>Wall Handstand</div><div class="ex-meta">Hombro · core · equilibrio — descanso 90s</div></td>
+      <td class="ex-sets">5×25–35s</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="jue-2"></td>
+      <td><div class="ex-name" data-name>Tuck Planche Hold</div><div class="ex-meta">Hombro · core · serrato — descanso 90s</div></td>
+      <td class="ex-sets">4× máximo limpio</td></tr>
+  </table>
+
+  <div class="circuit">
+    <div class="circuit-head"><h3 style="font-size:18px;">Circuito — 4 rondas</h3><span>Descanso 2 min entre rondas</span></div>
+    <ul class="circuit-list">
+      <li>Dominadas <b>×6</b></li>
+      <li>Pseudo Planche Push-Ups <b>×8</b></li>
+      <li>L-Sit <b>×20s</b></li>
+      <li>Pike Push-Ups <b>×8</b></li>
+    </ul>
+  </div>
+
+  <div class="block-label"><div class="dot"></div><span>Explosividad</span></div>
+  <table class="ex-table">
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="jue-3"></td>
+      <td><div class="ex-name" data-name>Cuerda rápida</div><div class="ex-meta">Cardio · coordinación — descanso 60s</div></td>
+      <td class="ex-sets">5×1min</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="jue-4"></td>
+      <td><div class="ex-name" data-name>Plyo Push-Ups</div><div class="ex-meta">Pecho · tríceps — descanso 90s · tempo explosivo</div></td>
+      <td class="ex-sets">4×6</td></tr>
+    <tr class="ex-row"><td class="ex-check"><input type="checkbox" class="chk" data-key="jue-5"></td>
+      <td><div class="ex-name" data-name>Broad Jumps</div><div class="ex-meta">Piernas · potencia — descanso 90s · tempo explosivo</div></td>
+      <td class="ex-sets">5×5</td></tr>
+  </table>
+
+  <hr class="rule">
+
+  <div class="day-head"><h2>Viernes</h2><span class="day-tag">Opcional</span></div>
+  <p class="day-focus">Skill Day</p>
+
+  <ul class="circuit-list" style="border:1px solid var(--line); border-radius:var(--radius); padding:6px 18px; margin-bottom:14px;">
+    <li>Planche <b>20 min técnica</b></li>
+    <li>Muscle-Up <b>15 min técnica</b></li>
+    <li>Movilidad <b>15 min</b></li>
+    <li>Cardio <b>20 min cuerda suave</b></li>
+  </ul>
+
+  <div class="note-box">
+    <b>Nota —</b> Si estoy muy fatigado, este día se omite sin culpa.
+  </div>
+</section>
+
+<!-- ================= PÁGINA 5 — PROGRESIÓN ================= -->
+<section class="page" id="p5">
+  <p class="kicker">Página 5</p>
+  <h2 class="page-title">Progresión de<br>las 3 habilidades</h2>
+  <p class="page-sub">Dónde estás hoy en cada escalera y qué te separa del siguiente escalón.</p>
+
+  <div class="card">
+    <h3>Planche</h3>
+    <ol class="ladder">
+      <li>Frog Stand</li>
+      <li>Tuck</li>
+      <li class="current">Advanced Tuck <span class="now-tag">Actual</span></li>
+      <li>Half Lay</li>
+      <li>Straddle</li>
+      <li>Full Planche</li>
+    </ol>
+    <div class="prog-bar-wrap">
+      <div class="prog-bar-labels"><span>Tuck Planche — 11s</span><span>Meta 15s</span></div>
+      <div class="prog-bar"><div class="prog-bar-fill" style="width:73%"></div></div>
+    </div>
+    <div class="goal-chip-row">
+      <div class="goal-chip"><span>Tuck</span><b>→ 15s</b></div>
+      <div class="goal-chip"><span>Advanced Tuck</span><b>→ 10s</b></div>
+      <div class="goal-chip"><span>Straddle</span><b>Primera rep asistida</b></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Muscle-Up</h3>
+    <ol class="ladder">
+      <li>1 — Dominadas explosivas</li>
+      <li>2 — Pecho a barra</li>
+      <li class="current">3 — Banda <span class="now-tag">Actual</span></li>
+      <li>4 — Transición</li>
+      <li>5 — Negativas</li>
+      <li>6 — Muscle-Up libre</li>
+    </ol>
+    <div class="note-box" style="margin-top:12px;">Trabajando etapa Banda / Transición según la rutina actual del martes.</div>
+  </div>
+
+  <div class="card">
+    <h3>Dragon Flag</h3>
+    <ol class="ladder">
+      <li class="current">Negativas <span class="now-tag">Actual</span></li>
+      <li>Repeticiones completas — 2–4 reps</li>
+      <li>Meta final — 5–8 reps perfectas</li>
+    </ol>
+  </div>
+
+  <div class="overload-box">
+    <h3>Sobrecarga progresiva</h3>
+    <p>Al completar todas las series limpias, sube la dificultad:</p>
+    <div class="chip-row">
+      <span class="pill">Mochila con peso</span>
+      <span class="pill">Banda más ligera</span>
+      <span class="pill">Mayor inclinación</span>
+      <span class="pill">Más rango de movimiento</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PÁGINA 6 — RECUPERACIÓN / NUTRICIÓN / TRACKER ================= -->
+<section class="page" id="p6">
+  <p class="kicker">Página 6</p>
+  <h2 class="page-title">Recuperación,<br>nutrición y tracker</h2>
+  <p class="page-sub">Lo que sostiene el entrenamiento fuera del entrenamiento.</p>
+
+  <div class="card">
+    <h3>Recuperación</h3>
+    <p class="card-note">Checklist diario</p>
+    <ul class="check-list">
+      <li><input type="checkbox" class="chk" data-key="rec-1"><span class="lbl" data-name>8–9 horas de sueño</span></li>
+      <li><input type="checkbox" class="chk" data-key="rec-2"><span class="lbl" data-name>2.5–3 L de agua</span></li>
+      <li><input type="checkbox" class="chk" data-key="rec-3"><span class="lbl" data-name>Movilidad de muñecas</span></li>
+      <li><input type="checkbox" class="chk" data-key="rec-4"><span class="lbl" data-name>Movilidad de hombros</span></li>
+      <li><input type="checkbox" class="chk" data-key="rec-5"><span class="lbl" data-name>7–10 mil pasos</span></li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Nutrición Fénix</h3>
+    <div class="macro-row">
+      <div class="macro"><div class="macro-val">13–15%</div><div class="macro-label">Grasa objetivo</div></div>
+      <div class="macro"><div class="macro-val">140–150g</div><div class="macro-label">Proteína / día</div></div>
+    </div>
+    <div class="food-grid">
+      <div class="food-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="14" r="7"/><path d="M12 3c1.5 2 1.5 4 0 5"/></svg>Huevos</div>
+      <div class="food-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14c0-5 4-9 9-9 3 0 4 1 4 4 0 5-4 9-9 9-2 0-4-1-4-4z"/></svg>Pollo</div>
+      <div class="food-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10h10l-1 8a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2z"/><path d="M9 10a3 3 0 0 1 6 0"/></svg>Yogur griego</div>
+      <div class="food-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="9" ry="5"/></svg>Arroz</div>
+      <div class="food-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 11c0-4 2-8 4-8s4 4 4 8-2 9-4 9-4-5-4-9z"/></svg>Papa</div>
+      <div class="food-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/></svg>Avena</div>
+      <div class="food-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="7"/><path d="M12 5v2"/></svg>Frutas</div>
+      <div class="food-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4c4 0 7 3 7 8s-3 8-7 8-7-3-7-8 3-8 7-8z"/></svg>Verduras</div>
+    </div>
+    <div class="no-rules">
+      <span><b>No</b> contar calorías</span>
+      <span><b>No</b> pesar comida</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Tracker semanal</h3>
+    <p class="card-note">12 semanas — toca una celda para escribir</p>
+    <div class="tracker-scroll">
+      <table class="tracker" id="trackerTable">
+        <thead>
+          <tr>
+            <th>Sem</th><th>Peso</th><th>Sueño</th><th>Proteína</th><th>Agua</th>
+            <th>Planche (s)</th><th>Dominadas máx</th><th>Dragon Flag</th><th>Muscle-Up</th><th>Racha</th>
+          </tr>
+        </thead>
+        <tbody id="trackerBody"></tbody>
+      </table>
+    </div>
+    <div class="reset-row">
+      <span class="save-note">Se guarda solo en este navegador</span>
+      <button class="reset-btn" id="resetBtn">Restablecer datos</button>
+    </div>
+  </div>
+
+  <footer><b>Proyecto Fénix</b> — Sebastián Ríos · 2026</footer>
+</section>
+
+<script>
+(function(){
+  var STORAGE_PREFIX = "fenix_v1_";
+
+  function safeGet(key){
+    try { return localStorage.getItem(key); } catch(e){ return null; }
+  }
+  function safeSet(key, val){
+    try { localStorage.setItem(key, val); } catch(e){}
+  }
+  function safeRemove(key){
+    try { localStorage.removeItem(key); } catch(e){}
+  }
+
+  // ---- checkboxes (exercises + recovery) ----
+  var boxes = document.querySelectorAll(".chk[data-key]");
+  boxes.forEach(function(box){
+    var storeKey = STORAGE_PREFIX + "chk_" + box.getAttribute("data-key");
+    var saved = safeGet(storeKey);
+    if(saved === "1"){
+      box.checked = true;
+      var lbl = box.closest("tr, li");
+      var nameEl = lbl ? lbl.querySelector("[data-name]") : null;
+      if(nameEl) nameEl.classList.add("done");
+    }
+    box.addEventListener("change", function(){
+      safeSet(storeKey, box.checked ? "1" : "0");
+      var container = box.closest("tr, li");
+      var nameEl = container ? container.querySelector("[data-name]") : null;
+      if(nameEl) nameEl.classList.toggle("done", box.checked);
+    });
+  });
+
+  // ---- tracker table build ----
+  var body = document.getElementById("trackerBody");
+  var cols = ["peso","sueno","proteina","agua","planche","dominadas","dragonflag","muscleup","racha"];
+  for(var w = 1; w <= 12; w++){
+    var tr = document.createElement("tr");
+    var tdWeek = document.createElement("td");
+    tdWeek.className = "wk";
+    tdWeek.textContent = "S" + w;
+    tr.appendChild(tdWeek);
+    cols.forEach(function(col){
+      var td = document.createElement("td");
+      var input = document.createElement("input");
+      input.type = "text";
+      input.className = "cell-input";
+      input.placeholder = "—";
+      input.setAttribute("inputmode", "decimal");
+      var key = STORAGE_PREFIX + "trk_" + col + "_" + w;
+      var savedVal = safeGet(key);
+      if(savedVal) input.value = savedVal;
+      input.addEventListener("input", function(k){
+        return function(){ safeSet(k, this.value); };
+      }(key));
+      td.appendChild(input);
+      tr.appendChild(td);
+    });
+    body.appendChild(tr);
+  }
+
+  // ---- reset button (two-step confirm) ----
+  var resetBtn = document.getElementById("resetBtn");
+  var armed = false;
+  var armTimer = null;
+  resetBtn.addEventListener("click", function(){
+    if(!armed){
+      armed = true;
+      resetBtn.textContent = "¿Seguro? Toca de nuevo";
+      armTimer = setTimeout(function(){
+        armed = false;
+        resetBtn.textContent = "Restablecer datos";
+      }, 3000);
+      return;
+    }
+    clearTimeout(armTimer);
+    try {
+      var toRemove = [];
+      for(var i = 0; i < localStorage.length; i++){
+        var k = localStorage.key(i);
+        if(k && k.indexOf(STORAGE_PREFIX) === 0) toRemove.push(k);
+      }
+      toRemove.forEach(safeRemove);
+    } catch(e){}
+    location.reload();
+  });
+
+  // ---- scroll progress + active nav ----
+  var fill = document.getElementById("progFill");
+  var sections = Array.prototype.slice.call(document.querySelectorAll(".page"));
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll(".topnav a"));
+
+  function onScroll(){
+    var doc = document.documentElement;
+    var scrollTop = doc.scrollTop || document.body.scrollTop;
+    var scrollHeight = (doc.scrollHeight || document.body.scrollHeight) - doc.clientHeight;
+    var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    fill.style.width = pct + "%";
+
+    var activeIdx = 0;
+    for(var i = 0; i < sections.length; i++){
+      var rect = sections[i].getBoundingClientRect();
+      if(rect.top <= 120) activeIdx = i;
+    }
+    navLinks.forEach(function(a){
+      a.classList.toggle("active", parseInt(a.getAttribute("data-idx"), 10) === activeIdx);
+    });
+  }
+  document.addEventListener("scroll", onScroll, {passive:true});
+  onScroll();
+})();
+</script>
+</body>
+</html>
